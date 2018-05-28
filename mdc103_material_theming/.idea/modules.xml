@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mdc103_material_theming.iml" filepath="$PROJECT_DIR$/mdc103_material_theming.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mdc103_material_theming_android.iml" filepath="$PROJECT_DIR$/mdc103_material_theming_android.iml" />
+    </modules>
+  </component>
+</project>
