@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 import 'model/product.dart';
+import 'login.dart';
 
 const double _kFlingVelocity = 2.0;
 
@@ -99,25 +100,51 @@ class _BackdropState extends State<Backdrop>
 
   @override
   Widget build(BuildContext context) {
+    var brandedIcon = Row(children: <Widget>[
+      ImageIcon(AssetImage('assets/slanted_menu.png')),
+      ImageIcon(AssetImage('assets/diamond.png')),
+    ]);
+
     var appBar = AppBar(
       brightness: Brightness.light,
       elevation: 0.0,
-      leading: IconButton(
-          icon: Icon(Icons.menu),
+      title: _BackdropTitle(
+        listenable: _controller.view,
+        frontTitle: Row(
+          children: <Widget>[
+            SizedBox(
+              width: 72.0,
+              child: IconButton(
+                padding: EdgeInsets.only(left: 20.0),
+                onPressed: _toggleBackdropLayerVisibility,
+                icon: brandedIcon,
+              ),
+            ),
+            widget.frontTitle,
+          ],
+        ),
+        backTitle: IconButton(
           onPressed: _toggleBackdropLayerVisibility,
+          icon: Icon(Icons.close),
+        ),
       ),
-      title: Text('SHRINE'),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
           onPressed: () {
-            // TODO: Add open login (104)
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+            );
           },
         ),
         IconButton(
           icon: Icon(Icons.tune),
           onPressed: () {
-            // TODO: Add open login (104)
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+            );
           },
         ),
       ],
@@ -158,6 +185,46 @@ class _FrontLayer extends StatelessWidget {
           ),
           Expanded(
             child: child,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BackdropTitle extends AnimatedWidget {
+  final Widget frontTitle;
+  final Widget backTitle;
+
+  const _BackdropTitle({
+    Key key,
+    Listenable listenable,
+    this.frontTitle,
+    this.backTitle,
+  }) : super(key: key, listenable: listenable);
+
+  @override
+  Widget build(BuildContext context) {
+    final Animation<double> animation = this.listenable;
+    return DefaultTextStyle(
+      style: Theme.of(context).primaryTextTheme.title,
+      softWrap: false,
+      overflow: TextOverflow.ellipsis,
+      child: Stack(
+        children: <Widget>[
+          Opacity(
+            opacity: CurvedAnimation(
+              parent: ReverseAnimation(animation),
+              curve: Interval(0.5, 1.0),
+            ).value,
+            child: backTitle,
+          ),
+          Opacity(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Interval(0.5, 1.0),
+            ).value,
+            child: frontTitle,
           ),
         ],
       ),
